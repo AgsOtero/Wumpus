@@ -11,10 +11,6 @@ import java.io.InputStreamReader;
 @SpringBootApplication
 public class WumpusClientApplication {
 
-	@Autowired
-	Cliente cliente;
-
-
 	public static void main(String[] args) throws IOException {
 
 
@@ -52,7 +48,6 @@ public class WumpusClientApplication {
 				default:
 					System.out.println("Ingrese una Opcion valida, si necesita ayuda use el comando -help");
 					break;
-
 			}
 		}
 

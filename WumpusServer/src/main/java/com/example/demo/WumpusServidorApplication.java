@@ -20,8 +20,6 @@ public class WumpusServidorApplication {
 
 
 		SpringApplication.run(WumpusServidorApplication.class, args);
-
-
 		}
 
 	}

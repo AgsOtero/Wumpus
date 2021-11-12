@@ -4,12 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import javax.print.DocFlavor;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
@@ -258,9 +255,6 @@ public class Tablero {
         if (ubicacionBrisa[posicionJugadorEnY][posicionJugadorEnX] == 1){
             this.sentidos +=  "-una brisa cerca-";
         }
-
-
-
     }
 
     @GetMapping("/arriba")
@@ -549,12 +543,12 @@ public class Tablero {
 
 
     int[][] tablero = { {0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0}
+                        {0,0,0,0,0,0,0},
+                        {0,0,0,0,0,0,0},
+                        {0,0,0,0,0,0,0},
+                        {0,0,0,0,0,0,0},
+                        {0,0,0,0,0,0,0},
+                        {0,0,0,0,0,0,0}
 
     };
 
@@ -639,7 +633,7 @@ public class Tablero {
     int posicionJugadorEnY = 0;
 
     static final int inicioX = 0;
-    static final int inicioY= 0;
+    static final int inicioY= 6;
 
     static final int tamañoTablero = 7;
     static final int tamañoCasillero = 49;
