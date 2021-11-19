@@ -23,7 +23,7 @@ public class Tablero {
             @ApiResponse(code = 200, message = "Movimiento o Accion realizada con exito"),
             @ApiResponse(code = 401, message = "No tenes permiso para ver este recurso"),
             @ApiResponse(code = 403, message = "No se encuentra el recurso al que queres acceder"),
-            @ApiResponse(code = 404, message = "TNo se encuentra el recurso al que queres acceder")
+            @ApiResponse(code = 404, message = "No se encuentra el recurso al que queres acceder")
     }
     )
 
@@ -40,10 +40,7 @@ public class Tablero {
 
         //Genero el tablero e inicializo las posiciones de cada componente
         for (int fila = 0; fila <tamañoTablero; fila++) {
-
             for (int col = 0; col <tamañoTablero; col++) {
-
-
                 ubicacionPozo[fila][col] = 0;
                 ubicacionOro[fila][col] = 0;
                 ubicacionWumpus[fila][col] = 0;
@@ -51,7 +48,6 @@ public class Tablero {
                 ubicacionBrisa[fila][col] = 0;
                 ubicacionOlor[fila][col] = 0;
                 ubicacionBrillo[fila][col] = 0;
-
             }
         }
 
@@ -119,16 +115,9 @@ public class Tablero {
 
                         ubicacionOro[fila][columna] = 1;
                         orosGenerado += 1;
-
                     }
-
-
                 }
-
-
             }
-
-
         }
         //Voy a chequear que el  no haya ni pozos ni wumpus en las posiciones donde hay oro, si hay los elimino.
         for (int fila = 0; fila < tamañoTablero; fila++) {
@@ -157,54 +146,54 @@ public class Tablero {
                 {
                     try//Brisa a la izquierda del pozo
                     {
-                        if (ubicacionPozo[fila][columna - 1] != 1) {
+                        if (ubicacionPozo[fila][columna - 1] != 1)
                             ubicacionBrisa[fila][columna - 1] = 1;
-                        }
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                     try//Brisa a la derecha del pozo
                     {
-                        if (ubicacionPozo[fila][columna + 1] != 1) {
+                        if (ubicacionPozo[fila][columna + 1] != 1)
                             ubicacionBrisa[fila][columna + 1] = 1;
-                        }
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                     try//Brisa abajo del pozo
                     {
-                        if (ubicacionPozo[fila - 1][columna] != 1) {
+                        if (ubicacionPozo[fila - 1][columna] != 1)
                             ubicacionBrisa[fila - 1][columna] = 1;
-                        }
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                     try//Brisa arriba del pozo
                     {
-                        if (ubicacionPozo[fila + 1][columna] != 1) {
+                        if (ubicacionPozo[fila + 1][columna] != 1)
                             ubicacionBrisa[fila + 1][columna] = 1;
-                        }
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                 }
                 if (ubicacionWumpus[fila][columna] == 1)// Busco los lugares donde hay wumpus, y pongo olor
                 {
                     try//Olor a la izquierda del wumpus
                     {
-                        if (ubicacionWumpus[fila][columna - 1] != 1) {
+                        if (ubicacionWumpus[fila][columna - 1] != 1)
                             ubicacionOlor[fila][columna - 1] = 1;
-                        }
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                     try//Olor a la derecha del wumpus
                     {
-                        if (ubicacionWumpus[fila][columna + 1] != 1) {
+                        if (ubicacionWumpus[fila][columna + 1] != 1)
                             ubicacionOlor[fila][columna + 1] = 1;
-                        }
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                     try//Olor abajo del wumpus
                     {
-                        if (ubicacionWumpus[fila - 1][columna] != 1) {
-                            ubicacionOlor[fila - 1][columna] = 1;
-                        }
+                        if (ubicacionWumpus[fila + 1][columna] != 1)
+                            ubicacionOlor[fila + 1][columna] = 1;
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                     try//olor arriba del pozo
                     {
-                        if (ubicacionWumpus[fila + 1][columna] != 1) {
-                            ubicacionOlor[fila + 1][columna] = 1;
-                        }
+                        if (ubicacionWumpus[fila - 1][columna] != 1)
+                            ubicacionOlor[fila - 1][columna] = 1;
+
                     }catch (ArrayIndexOutOfBoundsException e ){}
                 }
                 if (ubicacionOro[fila][columna] == 1)// Busco los lugares donde hay oro, y pongo un brillo
@@ -239,23 +228,69 @@ public class Tablero {
 
         }
 
-
+        System.out.println("Asa");
     }
 
 
     public void sentidos(){
 
-        this.sentidos = "";
+        this.sentidos="No siente nada.";
         if (ubicacionOlor[posicionJugadorEnY][posicionJugadorEnX] == 1){
-            this.sentidos = "-un olor raro cerca-";
+
+            this.sentidos += "-Siente un olor raro cerca-";
         }
         if (ubicacionBrillo[posicionJugadorEnY][posicionJugadorEnX] == 1){
-            this.sentidos +=  "-algo que brilla cerca-";
+            this.sentidos +=  "-Siente algo que brilla cerca-";
         }
         if (ubicacionBrisa[posicionJugadorEnY][posicionJugadorEnX] == 1){
-            this.sentidos +=  "-una brisa cerca-";
+            this.sentidos +=  "-Siente una brisa cerca-";
         }
     }
+
+    @GetMapping("/disparar")
+    @ResponseBody
+    @ApiOperation(value  = "Dispara una flecha hacia la posicion que esta mirando.")
+    public void disparar(){
+
+       flechas -= 1;
+
+        int proximo = 0;
+        int proximo_x = 0;
+        int proximo_y = 0;
+
+        if ( flechas < 0 )
+        {
+            flechas = 0;
+            return;
+        }
+
+        try
+        {
+            if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 1 && ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1 ] == 1 ) // MIRANDO IZQUIERDA
+            {
+                ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX] = 0;
+            }
+            else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 2 && ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] == 1 ) // MIRANDO ARRIBA
+            {
+                ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] = 0;
+
+            }
+            else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 3 && ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX+1] == 1 ) // MIRANDO DERECHA
+            {
+                ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX+1] = 0;
+
+            }
+            else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 4 && ubicacionWumpus[posicionJugadorEnY+1][posicionJugadorEnX] == 1 ) // MIRANDO IZQUIERDA
+            {
+                ubicacionWumpus[posicionJugadorEnY+1][posicionJugadorEnX] = 0;
+
+            }
+
+        }
+        catch( ArrayIndexOutOfBoundsException e ){ System.out.println( "DEBUG: FUERA DE LOS LIMITES.");  }
+
+    }
+
 
     @GetMapping("/arriba")
     @ResponseBody
@@ -263,20 +298,19 @@ public class Tablero {
     public String arriba(){
 
         int proximo = 0;
-        sentidos();
         //Miro si no me salgo del mapa, si lo hago pierdo automaticamente;
 
         try
         {
             proximo = ubicacionJugador[posicionJugadorEnY - 1][posicionJugadorEnX];
         }catch (ArrayIndexOutOfBoundsException e){
-            juegoPerdido = true;
-            return ("Te saliste del mapa y perdiste, intenta de nuevo");
+            return ("Te chocaste la pared, intenta otra direccion");
         }
         //Miro si no hay Wumpus al querer subir, si lo hay pierdo automaticamente;
         if (ubicacionWumpus[posicionJugadorEnY - 1][posicionJugadorEnX] == 1)
         {
             juegoPerdido = true;
+            posicionJugadorEnY --;
             return ("Te encontraste al Wumpus, perdiste!!");
 
         }
@@ -285,6 +319,7 @@ public class Tablero {
         if (ubicacionPozo[posicionJugadorEnY - 1][posicionJugadorEnX] == 1)
         {
             juegoPerdido = true;
+            posicionJugadorEnY --;
             return ("Te caiste por un pozo, perdiste!!");
 
         }
@@ -292,6 +327,7 @@ public class Tablero {
         if (ubicacionOro[posicionJugadorEnY - 1][posicionJugadorEnX] == 1)
         {
             tieneOro = true;
+            posicionJugadorEnY --;
             return ("Encontraste oro, volve al inicio para ganar!");
         }
 
@@ -299,7 +335,8 @@ public class Tablero {
         //Pongo en 2 esa ubicacion, para indicar que subio
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 2;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnY = posicionJugadorEnY - 1;
+        posicionJugadorEnY --;
+        sentidos();
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -318,6 +355,7 @@ public class Tablero {
             juegoGanado = true;
             return ("Ganaste!!");
         }else {
+
 
             return ("Siente: "+sentidos+". Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
         }
@@ -338,25 +376,27 @@ public class Tablero {
         {
             proximo = ubicacionJugador[posicionJugadorEnY + 1][posicionJugadorEnX];
         }catch (ArrayIndexOutOfBoundsException e){
-            juegoPerdido = true;
-            return ("Te saliste del mapa y perdiste, intenta de nuevo");
+            return ("Te chocaste la pared, intenta otra direccion");
         }
         //Miro si no hay Wumpus al querer bajar, si lo hay pierdo automaticamente;
         if (ubicacionWumpus[posicionJugadorEnY + 1][posicionJugadorEnX] == 1)
         {
             juegoPerdido = true;
+            posicionJugadorEnY ++;
             return ("Te encontraste al Wumpus, perdiste!!");
         }
         //Miro si no hay pozo al querer bajar, si lo hay pierdo automaticamente;
         if (ubicacionPozo[posicionJugadorEnY + 1][posicionJugadorEnX] == 1)
         {
             juegoPerdido = true;
+            posicionJugadorEnY ++;
             return ("Te caiste por un pozo, perdiste!!");
         }
         //Miro si hay oro al querer bajar, si lo hay lo junto;
         if (ubicacionOro[posicionJugadorEnY + 1][posicionJugadorEnX] == 1)
         {
             tieneOro = true;
+            posicionJugadorEnY ++;
             return ("Encontraste oro, volve al inicio para ganar!");
         }
 
@@ -364,7 +404,7 @@ public class Tablero {
         //Pongo en 2 esa ubicacion, para indicar que bajo
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 4;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnY = posicionJugadorEnY + 1;
+        posicionJugadorEnY ++;
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -378,11 +418,7 @@ public class Tablero {
 
             juegoGanado = true;
             return ("Ganaste!!");
-        }
-        if (juegoPerdido){
-            return  ("Perdiste");
         }else {
-
             return ("Siente: "+sentidos+". Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
         }
 
@@ -401,25 +437,27 @@ public class Tablero {
         {
             proximo = ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX - 1];
         }catch (ArrayIndexOutOfBoundsException e){
-            juegoPerdido = true;
-            return ("Te saliste del mapa y perdiste, intenta de nuevo");
+            return ("Te chocaste la pared, intenta otra direccion");
         }
         //Miro si no hay Wumpus al querer ir a la izquierda, si lo hay pierdo automaticamente;
         if (ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1] == 1)
         {
             juegoPerdido = true;
+            posicionJugadorEnX --;
             return ("Te encontraste al Wumpus, perdiste!!");
         }
         //Miro si no hay pozo al querer ir a la izquierda, si lo hay pierdo automaticamente;
         if (ubicacionPozo[posicionJugadorEnY][posicionJugadorEnX - 1] == 1)
         {
             juegoPerdido = true;
+            posicionJugadorEnX --;
             return ("Te caiste por un pozo, perdiste!!");
         }
         //Miro si hay oro al querer ir a la izquierda, si lo hay lo junto;
         if (ubicacionOro[posicionJugadorEnY][posicionJugadorEnX - 1] == 1)
         {
             tieneOro = true;
+            posicionJugadorEnX --;
             return ("Encontraste oro, volve al inicio para ganar!");
         }
 
@@ -427,7 +465,7 @@ public class Tablero {
         //Pongo en 1 esa ubicacion, para indicar que fue a  la izquierda
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 1;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnX = posicionJugadorEnX - 1;
+        posicionJugadorEnX --;
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -465,25 +503,27 @@ public class Tablero {
         {
             proximo = ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX + 1];
         }catch (ArrayIndexOutOfBoundsException e){
-            juegoPerdido = true;
-            return ("Te saliste del mapa y perdiste, intenta de nuevo");
+            return ("Te chocaste la pared, intenta otra direccion");
         }
         //Miro si no hay Wumpus al querer ir a la izquierda, si lo hay pierdo automaticamente;
         if (ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX + 1] == WUMPUS)
         {
             juegoPerdido = true;
+            posicionJugadorEnX ++;
             return ("Te encontraste al Wumpus, perdiste!!");
         }
         //Miro si no hay pozo al querer ir a la izquierda, si lo hay pierdo automaticamente;
         if (ubicacionPozo[posicionJugadorEnY][posicionJugadorEnX + 1] == POZO)
         {
             juegoPerdido = true;
+            posicionJugadorEnX ++;
             return ("Te caiste por un pozo, perdiste!!");
         }
         //Miro si hay oro al querer ir a la izquierda, si lo hay lo junto;
         if (ubicacionOro[posicionJugadorEnY][posicionJugadorEnX + 1] == ORO)
         {
             tieneOro = true;
+            posicionJugadorEnX ++;
             return ("Encontraste oro, volve al inicio para ganar!");
         }
 
@@ -491,7 +531,7 @@ public class Tablero {
         //Pongo en 3 esa ubicacion, para indicar que fue a  la izquierda
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 3;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnX = posicionJugadorEnX + 1;
+        posicionJugadorEnX ++;
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -514,11 +554,12 @@ public class Tablero {
         }
     }
 
+
     @GetMapping("/reset")
     @ResponseBody
     @ApiOperation(value = "Vuelve al jugador a la posicion X=0,Y=0")
     public String reset(){
-        this.posicionJugadorEnY = 0;
+        this.posicionJugadorEnY = 6;
         this.posicionJugadorEnX = 0;
         this.juegoPerdido = false;
         return ("El Juego ha sido reiniciado");
@@ -528,9 +569,9 @@ public class Tablero {
     @ResponseBody
     @ApiOperation(value = "Muestra el recorrido del jugador")
     public String tablero(){
-
-        return (Arrays.deepToString(ubicacionJugador));
-
+           String tablero = Arrays.deepToString(ubicacionJugador).replace(']','\n').replace('[',' ').replace(',',' ');
+            String vacio = " ";
+            return  vacio.concat(tablero);
     }
     @GetMapping("/ubicacion")
     @ResponseBody
@@ -623,14 +664,14 @@ public class Tablero {
     static final int ORO        = 1;
 
 
-    String sentidos = "No siente nada.";
+    String sentidos = "";
 
     boolean juegoPerdido = false;
     boolean tieneOro = false;
     boolean juegoGanado = false;
 
     int posicionJugadorEnX = 0;
-    int posicionJugadorEnY = 0;
+    int posicionJugadorEnY = 6;
 
     static final int inicioX = 0;
     static final int inicioY= 6;
@@ -638,6 +679,6 @@ public class Tablero {
     static final int tamañoTablero = 7;
     static final int tamañoCasillero = 49;
 
-
+    int flechas = 2;
 
 }
