@@ -28,7 +28,7 @@ public class Tablero {
     )
 
 
-    public void generarMundo() {
+    private void generarMundo() {
 
 
         Random rand = new Random(new Date().getTime());
@@ -231,10 +231,12 @@ public class Tablero {
         System.out.println("Asa");
     }
 
+    @GetMapping("/sentir")
+    @ResponseBody
+    @ApiOperation(value  = "Usa los sentidos para detectar peligro cerca.")
+    public String sentir(){
 
-    public void sentidos(){
-
-        this.sentidos="No siente nada.";
+        this.sentidos="";
         if (ubicacionOlor[posicionJugadorEnY][posicionJugadorEnX] == 1){
 
             this.sentidos += "-Siente un olor raro cerca-";
@@ -245,15 +247,22 @@ public class Tablero {
         if (ubicacionBrisa[posicionJugadorEnY][posicionJugadorEnX] == 1){
             this.sentidos +=  "-Siente una brisa cerca-";
         }
+
+
+        if (sentidos.equals("")){
+            sentidos += "No siente nada.";
+        }
+
+        return sentidos;
     }
 
     @GetMapping("/disparar")
     @ResponseBody
     @ApiOperation(value  = "Dispara una flecha hacia la posicion que esta mirando.")
-    public void disparar(){
+    public String disparar(){
 
        flechas -= 1;
-
+        String estado = "";
         int proximo = 0;
         int proximo_x = 0;
         int proximo_y = 0;
@@ -261,33 +270,46 @@ public class Tablero {
         if ( flechas < 0 )
         {
             flechas = 0;
-            return;
+            estado.concat("Te quedaste sin flechas!");
+            return estado;
         }
+        estado += "Flecha disparada!";
 
         try
         {
             if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 1 && ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1 ] == 1 ) // MIRANDO IZQUIERDA
             {
-                ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX] = 0;
+                ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1] = 0;
+                ubicacionWumpusMuerto[posicionJugadorEnY][posicionJugadorEnX - 1] = 1;
+                estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
+
+
             }
             else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 2 && ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] == 1 ) // MIRANDO ARRIBA
             {
                 ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] = 0;
+                ubicacionWumpusMuerto[posicionJugadorEnY - 1][posicionJugadorEnX] = 1;
+                estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
 
             }
             else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 3 && ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX+1] == 1 ) // MIRANDO DERECHA
             {
                 ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX+1] = 0;
+                ubicacionWumpusMuerto[posicionJugadorEnY][posicionJugadorEnX + 1] = 1;
+                estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
 
             }
             else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 4 && ubicacionWumpus[posicionJugadorEnY+1][posicionJugadorEnX] == 1 ) // MIRANDO IZQUIERDA
             {
                 ubicacionWumpus[posicionJugadorEnY+1][posicionJugadorEnX] = 0;
+                ubicacionWumpusMuerto[posicionJugadorEnY + 1][posicionJugadorEnX] = 1;
+                estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
 
             }
 
         }
         catch( ArrayIndexOutOfBoundsException e ){ System.out.println( "DEBUG: FUERA DE LOS LIMITES.");  }
+        return estado;
 
     }
 
@@ -336,7 +358,7 @@ public class Tablero {
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 2;
         //Actualizo la posicion actual del jugador
         posicionJugadorEnY --;
-        sentidos();
+
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -357,7 +379,7 @@ public class Tablero {
         }else {
 
 
-            return ("Siente: "+sentidos+". Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
+            return ("Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
         }
 
 
@@ -368,7 +390,7 @@ public class Tablero {
     public String abajo(){
 
         int proximo = 0;
-        sentidos();
+
 
 
         //Miro si no me salgo del mapa, si lo hago pierdo automaticamente;
@@ -419,7 +441,7 @@ public class Tablero {
             juegoGanado = true;
             return ("Ganaste!!");
         }else {
-            return ("Siente: "+sentidos+". Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
+            return (" Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
         }
 
 
@@ -431,7 +453,7 @@ public class Tablero {
     public String izquierda(){
 
         int proximo = 0;
-        sentidos();
+
         //Miro si no me salgo del mapa, si lo hago pierdo automaticamente;
         try
         {
@@ -485,7 +507,7 @@ public class Tablero {
             return  ("Perdiste");
         }else {
 
-            return ("Siente: "+sentidos+". Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
+            return (" Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
         }
 
 
@@ -496,7 +518,7 @@ public class Tablero {
     public String derecha(){
 
         int proximo = 0;
-        sentidos();
+
 
         //Miro si no me salgo del mapa, si lo hago pierdo automaticamente;
         try
@@ -550,7 +572,7 @@ public class Tablero {
             return  ("Perdiste");
         }else {
 
-            return ("Siente: " +sentidos+ ". Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
+            return (" Posicion del jugador en X : " + posicionJugadorEnX + " Posicion del jugador en Y : " + posicionJugadorEnY);
         }
     }
 
@@ -656,6 +678,15 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
+    int[][] ubicacionWumpusMuerto = { {0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0}
+
+    };
 
 
 
@@ -673,8 +704,8 @@ public class Tablero {
     int posicionJugadorEnX = 0;
     int posicionJugadorEnY = 6;
 
-    static final int inicioX = 0;
-    static final int inicioY= 6;
+    public static final int inicioX = 0;
+    public static final int inicioY= 6;
 
     static final int tamañoTablero = 7;
     static final int tamañoCasillero = 49;

@@ -15,6 +15,7 @@ public class WumpusClientApplication {
 
 
 		SpringApplication.run(WumpusClientApplication.class, args);
+
 		Cliente cliente = new Cliente();
 		while (true) {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -42,8 +43,14 @@ public class WumpusClientApplication {
 				case "ubicacion":
 					System.out.println(cliente.getUbicacionCall());
 					break;
+				case "sentir":
+					System.out.println(cliente.getSentir());
+					break;
+				case "disparar":
+					System.out.println(cliente.getDisparar());
+					break;
 				case "-help":
-					System.out.println("Los comandos validos son: arriba,abajo,izquierda,derecha,reset,tablero");
+					System.out.println("Los comandos validos son: arriba,abajo,izquierda,derecha,reset,tablero,sentir");
 					break;
 				default:
 					System.out.println("Ingrese una Opcion valida, si necesita ayuda use el comando -help");

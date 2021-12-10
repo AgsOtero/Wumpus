@@ -71,6 +71,24 @@ public class Cliente {
         return respuesta;
 
     }
+    public String getSentir() {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        final String resetCall = "http://localhost:8080/sentir";
+        String respuesta = restTemplate.getForObject(resetCall, String.class);
+        return respuesta;
+
+    }
+    public String getDisparar() {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        final String resetCall = "http://localhost:8080/disparar";
+        String respuesta = restTemplate.getForObject(resetCall, String.class);
+        return respuesta;
+
+    }
 
 
 }
