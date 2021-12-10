@@ -28,13 +28,11 @@ public class Tablero {
     )
 
 
-    private void generarMundo() {
+    public void generarMundo() {
 
 
         Random rand = new Random(new Date().getTime());
-        int wumpusGenerados = 0;
-        int orosGenerado = 0;
-        int pozosGenerados = 0;
+
 
 
 
@@ -111,7 +109,7 @@ public class Tablero {
 
                 if (x < 5 && x > 0) {
 
-                    if (orosGenerado < 3) {
+                    if (orosGenerado < 1) {
 
                         ubicacionOro[fila][columna] = 1;
                         orosGenerado += 1;
@@ -228,7 +226,8 @@ public class Tablero {
 
         }
 
-        System.out.println("Asa");
+        ubicacionJugador[inicioY][inicioX] = 1;
+
     }
 
     @GetMapping("/sentir")
@@ -354,10 +353,11 @@ public class Tablero {
         }
 
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 0;
+        posicionJugadorEnY --;
         //Pongo en 2 esa ubicacion, para indicar que subio
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 2;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnY --;
+
 
 
         if (tieneOro){
@@ -423,10 +423,11 @@ public class Tablero {
         }
 
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 0;
+        posicionJugadorEnY ++;
         //Pongo en 2 esa ubicacion, para indicar que bajo
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 4;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnY ++;
+
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -484,10 +485,11 @@ public class Tablero {
         }
 
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 0;
+        posicionJugadorEnX --;
         //Pongo en 1 esa ubicacion, para indicar que fue a  la izquierda
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 1;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnX --;
+
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -527,21 +529,21 @@ public class Tablero {
         }catch (ArrayIndexOutOfBoundsException e){
             return ("Te chocaste la pared, intenta otra direccion");
         }
-        //Miro si no hay Wumpus al querer ir a la izquierda, si lo hay pierdo automaticamente;
+        //Miro si no hay Wumpus al querer ir a la derecha, si lo hay pierdo automaticamente;
         if (ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX + 1] == WUMPUS)
         {
             juegoPerdido = true;
             posicionJugadorEnX ++;
             return ("Te encontraste al Wumpus, perdiste!!");
         }
-        //Miro si no hay pozo al querer ir a la izquierda, si lo hay pierdo automaticamente;
+        //Miro si no hay pozo al querer ir a la derecha, si lo hay pierdo automaticamente;
         if (ubicacionPozo[posicionJugadorEnY][posicionJugadorEnX + 1] == POZO)
         {
             juegoPerdido = true;
             posicionJugadorEnX ++;
             return ("Te caiste por un pozo, perdiste!!");
         }
-        //Miro si hay oro al querer ir a la izquierda, si lo hay lo junto;
+        //Miro si hay oro al querer ir a la derecha, si lo hay lo junto;
         if (ubicacionOro[posicionJugadorEnY][posicionJugadorEnX + 1] == ORO)
         {
             tieneOro = true;
@@ -550,10 +552,11 @@ public class Tablero {
         }
 
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 0;
-        //Pongo en 3 esa ubicacion, para indicar que fue a  la izquierda
+        posicionJugadorEnX ++;
+        //Pongo en 3 esa ubicacion, para indicar que fue a  la derecha
         ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] = 3;
         //Actualizo la posicion actual del jugador
-        posicionJugadorEnX ++;
+
 
         if (tieneOro){
             for (int fila = 0; fila < tamañoTablero; fila ++){
@@ -583,6 +586,7 @@ public class Tablero {
     public String reset(){
         this.posicionJugadorEnY = 6;
         this.posicionJugadorEnX = 0;
+        ubicacionJugador[inicioY][inicioX] = 1;
         this.juegoPerdido = false;
         return ("El Juego ha sido reiniciado");
 
@@ -605,7 +609,7 @@ public class Tablero {
 
 
 
-    int[][] tablero = { {0,0,0,0,0,0,0},
+    public int[][] tablero = { {0,0,0,0,0,0,0},
                         {0,0,0,0,0,0,0},
                         {0,0,0,0,0,0,0},
                         {0,0,0,0,0,0,0},
@@ -615,7 +619,7 @@ public class Tablero {
 
     };
 
-    int[][] ubicacionPozo = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionPozo = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -624,7 +628,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
-    int[][] ubicacionOro = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionOro = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -633,7 +637,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
     };
 
-    int[][] ubicacionWumpus = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionWumpus = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -642,7 +646,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
-    int[][] ubicacionBrisa = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionBrisa = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -651,7 +655,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
-    int[][] ubicacionOlor = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionOlor = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -660,7 +664,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
-    int[][] ubicacionBrillo = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionBrillo = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -669,7 +673,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
-    int[][] ubicacionJugador = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionJugador = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -678,7 +682,7 @@ public class Tablero {
             {0,0,0,0,0,0,0}
 
     };
-    int[][] ubicacionWumpusMuerto = { {0,0,0,0,0,0,0},
+    public int[][] ubicacionWumpusMuerto = { {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0},
@@ -709,6 +713,10 @@ public class Tablero {
 
     static final int tamañoTablero = 7;
     static final int tamañoCasillero = 49;
+
+    public int wumpusGenerados = 0;
+    public int orosGenerado = 0;
+    public int pozosGenerados = 0;
 
     int flechas = 2;
 
