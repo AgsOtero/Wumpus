@@ -50,7 +50,7 @@ public class WumpusClientApplication {
 					System.out.println(cliente.getDisparar());
 					break;
 				case "-help":
-					System.out.println("Los comandos validos son: arriba,abajo,izquierda,derecha,reset,tablero,sentir");
+					System.out.println("Los comandos validos son: arriba,abajo,izquierda,derecha,reset,tablero,sentir,disparar");
 					break;
 				default:
 					System.out.println("Ingrese una Opcion valida, si necesita ayuda use el comando -help");
