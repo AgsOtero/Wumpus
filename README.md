@@ -4,6 +4,10 @@ El objetivo del Juego es encontrar el oro y volver al inicio, evitando los pozos
 
 Los comandos validos son: arriba,abajo,izquierda,derecha,reset,tablero,sentir,disparar.
 
+# Como Jugar?
+
+Para arrancar el juego se debera iniciar primero el servidor y luego el cliente, en el cual se ejecutarán los comandos a traves de la consola.
+
 
 # Reglas
 
