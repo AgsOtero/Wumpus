@@ -276,15 +276,8 @@ public class Tablero {
 
         try
         {
-            if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 1 && ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1 ] == 1 ) // MIRANDO IZQUIERDA
-            {
-                ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1] = 0;
-                ubicacionWumpusMuerto[posicionJugadorEnY][posicionJugadorEnX - 1] = 1;
-                estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
 
-
-            }
-            else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 2 && ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] == 1 ) // MIRANDO ARRIBA
+            if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 2 && ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] == 1 ) // MIRANDO ARRIBA
             {
                 ubicacionWumpus[posicionJugadorEnY-1][posicionJugadorEnX] = 0;
                 ubicacionWumpusMuerto[posicionJugadorEnY - 1][posicionJugadorEnX] = 1;
@@ -296,6 +289,14 @@ public class Tablero {
                 ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX+1] = 0;
                 ubicacionWumpusMuerto[posicionJugadorEnY][posicionJugadorEnX + 1] = 1;
                 estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
+
+            }
+            else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 1 && ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1 ] == 1 ) // MIRANDO IZQUIERDA
+            {
+                ubicacionWumpus[posicionJugadorEnY][posicionJugadorEnX - 1] = 0;
+                ubicacionWumpusMuerto[posicionJugadorEnY][posicionJugadorEnX - 1] = 1;
+                estado += ". Escuchas el grito del Wumpus, esta Muerto pero cuidado que puede haber mas!!";
+
 
             }
             else if (ubicacionJugador[posicionJugadorEnY][posicionJugadorEnX] == 4 && ubicacionWumpus[posicionJugadorEnY+1][posicionJugadorEnX] == 1 ) // MIRANDO IZQUIERDA
@@ -579,6 +580,12 @@ public class Tablero {
         }
     }
 
+    public int[][] generarElemento(int[][] Capa, int posicionY, int posicionX)
+    {
+        Capa[posicionY][posicionX] = 1;
+        return Capa;
+    }
+
 
     @GetMapping("/reset")
     @ResponseBody
@@ -701,9 +708,9 @@ public class Tablero {
 
     String sentidos = "";
 
-    boolean juegoPerdido = false;
-    boolean tieneOro = false;
-    boolean juegoGanado = false;
+    public boolean juegoPerdido = false;
+    public boolean tieneOro = false;
+    public boolean juegoGanado = false;
 
     int posicionJugadorEnX = 0;
     int posicionJugadorEnY = 6;
